@@ -64,13 +64,13 @@ class Cola:
         return aux
 
 
-    def recorrerLista(self):
+    def recorrerLista(self, tipo):
         if(self.primero == None):
             return
 
         pivote = self.primero
         while(pivote != None):
-            print(pivote.dato)
+            pivote.dato.imprimir(tipo)
             pivote = pivote.siguiente
 
 
