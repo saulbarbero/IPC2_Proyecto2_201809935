@@ -35,6 +35,23 @@ class Cola:
 
         return False
 
+    def buscarPorPosicion(self, posicion):
+        if self.primero == None:
+            print('Lista Vacia')
+            return None
+
+        pivote = self.primero
+        contador = 1
+        while(pivote != None):
+
+            if int(contador) == int(posicion):
+                return pivote.dato
+
+            contador += 1
+            pivote = pivote.siguiente
+
+        return None
+
     def insertar(self, dato):
         self.tam += 1
         nuevo = Nodo(dato = dato)
@@ -45,33 +62,21 @@ class Cola:
             nuevo.anterior = self.ultimo
             self.ultimo = nuevo
 
-    def dequeue(self):
-        
-        if self.tam == 1:
-            self.primero = self.ultimo = None
-            return
 
-        aux = self.primero.siguiente
-        aux.anterior = None
-        self.primero.siguiente = None
-        self.primero = aux
-
-        self.tam -= 1
-
-
-        print(f'Eliminado Orden#: {aux.dato.id}')
-
-        return aux
-
-
-    def recorrerLista(self):
+    def recorrerLista(self, tipo):
         if(self.primero == None):
             return
 
         pivote = self.primero
+        contador = 1
         while(pivote != None):
-            print(pivote.dato)
+            print(f'\t{contador}.- ', end=' ')
+            pivote.dato.imprimir(tipo) #ciudad, robot, unidadMapa
             pivote = pivote.siguiente
+
+            contador += 1
+
+        print('########################################')
 
 
     def generarReporte(self, nombre):
@@ -119,6 +124,3 @@ class Cola:
 
 
         return buffer
-
-
-#definir aqui el objeto.

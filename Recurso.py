@@ -4,6 +4,7 @@ from Matriz import Matriz #mapa de la ciudad
 #objetos
 from Ciudad import Ciudad 
 from Robot import Robot
+from Ciudad import unidadMapa
 
 
 import xml.etree.ElementTree as ET
@@ -34,24 +35,22 @@ class Recurso:
     
     def capturarCiudad(self, root):
         mapa = Matriz()
-        lEntradas = Cola()
         city = Ciudad()
+        lEntradas = Cola()
 
         for ciudad in root:
             if ciudad.tag == 'nombre':
-                # print('nombre')
-                print(f'Ciudad: {ciudad.text} Columnas: {ciudad.attrib["columnas"]} Filas: {ciudad.attrib["filas"]}')
                 city.nombre = ciudad.text
             elif ciudad.tag == 'fila':
-
-                self.crearMatriz(int(ciudad.attrib["numero"]), 0,  ciudad.text, mapa ,lEntradas)
-                if ciudad.text.find('R') > 0:
-                    city.recurso = True
-                elif ciudad.text.find('C') > 0:
-                    city.civil = True
+                #inicializando la lista, si estas estan nulas.
+                if ciudad.text.find('C') > 1 and city.lCivil == None:
+                    city.lCivil = Cola()
+                if ciudad.text.find('R') > 1 and city.lRecurso == None:
+                    city.lRecurso = Cola()
+                self.crearMatriz(int(ciudad.attrib["numero"]), 0,  ciudad.text, mapa ,lEntradas, city.lCivil, city.lRecurso)
 
             else: #debe de ser una unidad militar
-                self.crearMatriz(int(ciudad.attrib["fila"]), int(ciudad.attrib["columna"]), None, mapa, lEntradas)
+                self.crearMatriz(int(ciudad.attrib["fila"]), int(ciudad.attrib["columna"]), None, mapa, None, None, None)
 
 
         # mapa.recorrerPorFilas()
@@ -61,13 +60,13 @@ class Recurso:
         return city
 
 
-    def crearMatriz(self, fila, columna,  text, mapa, lEntradas):
+    def crearMatriz(self, fila, columna,  text, mapa, lEntradas, lcivil, lrecurso):
 
         if(text == None):
             mapa.insertar(6, columna, fila)
             return
 
-        iterador = 0
+        iterador = 1
         text = text.replace('"', '')
         for c in text:
             # print(f'Fila:{fila} Columna: {iterador} Content: {c}')
@@ -77,13 +76,19 @@ class Recurso:
                 mapa.insertar(2, iterador + 1, fila)
             elif c == "E":
                 mapa.insertar(3, iterador + 1, fila)
-                entrada = f'{iterador + 1}, fila'
-                lEntradas.insertar(entrada)
+
+                lEntradas.insertar(unidadMapa(iterador, fila, 0))
             elif c == "R":
+                #agregar el elemento a una nueva lista
+                lrecurso.insertar(unidadMapa(iterador, fila, 2))
                 mapa.insertar(4, iterador + 1, fila)
             elif c == "C":
+                #agrear el elemento a una nueva lista.
+                lcivil.insertar(unidadMapa(iterador, fila, 1))
                 mapa.insertar(5, iterador + 1, fila)
             iterador += 1
+
+
 
 
 
@@ -97,3 +102,9 @@ class Recurso:
 
 
         return robot
+
+
+
+
+
+

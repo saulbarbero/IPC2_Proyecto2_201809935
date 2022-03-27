@@ -38,7 +38,7 @@ class ListaCabecera:
                 nuevo.siguiente = pivote
                 pivote.anterior = nuevo
 
-        print('')
+    
     
     def obtenerNodoCabecera(self, posicion):
         if(self.primero == None):
@@ -62,3 +62,7 @@ class ListaCabecera:
             print(pivote.posicion)
             
             pivote = pivote.siguiente
+
+
+        
+
