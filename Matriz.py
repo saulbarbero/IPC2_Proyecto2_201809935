@@ -1,8 +1,9 @@
+
 from ListaCabecera import ListaCabecera
 from NodoOrtogonal import NodoOrtogonal
-from NodoCabecera import NodoCabecera
+from NodoCabecera import NodoCabecera 
 from os import system
-import sys
+
 
 class Matriz:
     def __init__(self, pa = ""):
@@ -200,11 +201,7 @@ class Matriz:
 
 
 
-    def flip(self, valor):
-        if valor == "W":
-            return "B"
-        
-        return "W"
+    
 
     def buscarNodo(self, x, y, m):
         efila = m.filas.obtenerNodoCabecera(y)

@@ -1,13 +1,16 @@
-from Matriz import Matriz
 from Cola import Cola
+from Matriz import Matriz
+
 
 class Ciudad:
     def __init__(self, m = Matriz(), lEntrada = None, nombre = "default"):
         self.mapa = m
-        self.recurso = 0
-        self.civil = 0
+        self.lRecurso = None
+        self.lCivil = None
         self.lEntrada = lEntrada
         self.nombre = nombre
+
+
 
     def obtenerLCiviles(self, lCiudad:Cola):
         if lCiudad.primero == None:
@@ -19,7 +22,7 @@ class Ciudad:
         pivote = lCiudad.primero
         while(pivote != None):
 
-            if pivote.dato.civil > 0:
+            if pivote.dato.lCivil != None:
                 lCiviles.insertar(pivote.dato)
 
             pivote = pivote.siguiente
@@ -41,7 +44,7 @@ class Ciudad:
         pivote = lCiudad.primero
         while(pivote != None):
 
-            if pivote.dato.recurso > 0:
+            if pivote.dato.lRecurso != None:
                 lRecursos.insertar(pivote.dato)
 
             pivote = pivote.siguiente
@@ -54,6 +57,22 @@ class Ciudad:
 
     def imprimir(self, tipo):
         if int(tipo) == 0:
-            print(f'Ciudad: {self.nombre} Cant. Recursos: {self.recurso}')
+            print(f'Ciudad: {self.nombre} Cant. Recursos: {self.lRecurso.tam}')
         else:
-            print(f'Ciudad: {self.nombre} Cant. Civiles: {self.civil}')
+            print(f'Ciudad: {self.nombre} Cant. Civiles: {self.lCivil.tam}')
+
+
+class unidadMapa:
+    def __init__(self, x=0, y=0, tipo=-1):
+        self.x = x
+        self.y = y
+        self.tipo = tipo
+
+    def imprimir(self, tipo):
+        if int(tipo) == 0:
+            print(f'Entrada en coordenadas x,y: {self.x},{self.y}')
+        elif int(tipo) == 1:
+            print(f'Unidad Civil en coordenadas x,y: {self.x},{self.y}')
+        else:
+            print(f'Recurso en coordenadas x,y: {self.x},{self.y}')
+

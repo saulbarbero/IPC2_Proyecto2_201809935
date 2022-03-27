@@ -1,11 +1,10 @@
 from Recurso import Recurso
-from Cola import Cola #Esto realemte es una lista no una cola
-
+from Cola import Cola
+from  Recurso  import Recurso
 from Ciudad import Ciudad
 from Robot import Robot
 robots = Cola()
 ciudades = Cola()
-
 
 menuPrincipal = {
     1: 'Cargar Archivo',
@@ -55,23 +54,153 @@ def menuP():
 
 
 def misionRescate():
-    print('Mision rescate')
+    print('**Mision rescate**')
     ciudad = Ciudad()
     robot = Robot('','','')
+
     lRescate = ciudad.obtenerLCiviles(ciudades)
     lRobots = robot.obtenerlRobotsDisponibles(0, robots)
+    civil = None
+    entrada = None
+
     if lRescate == None or lRobots == None:
+        print('Error: No se encuentran unidades Civiles en la ciudad seleccionada')
         return
 
-    #ejecutar mision, hay mas puntos de entrada ? solicitar el punto de entrada. 
+    #Seleccionando la Ciudad
 
-    lRobots.recorrerLista(0)
+    print('**Segun inteligencia, este es el listado de ciudades que contienen Civiles**')
+
+    while True:
+        lRescate.recorrerLista(1)
+        entradaCiudad = int(input('Seleccione una Ciudad para desplegar la mision: '))
+        ciudad = lRescate.buscarPorPosicion(entradaCiudad)
+
+        if ciudad != None:
+            break
+
+    #Seleccionando el Robot
+    if lRobots.tam > 1: # nos indica que hay mas de un robot, se debe de poder elegir el robot deseado
+        while True:
+            lRobots.recorrerLista(-1)
+            entradaRobot = int(input('Seleccione un Robot para la misión: '))
+            robot = lRobots.buscarPorPosicion(entradaRobot)
+
+            if robot != None:
+                break
+
+    else:
+        robot = lRobots.primero.dato
+
+
+    #Seleccionando la unidad civil
+
+    if ciudad.lCivil.tam > 1:
+        while True:
+            ciudad.lCivil.recorrerLista(1)
+            entradaCivil = int(input('Seleccione una unidad civil a rescatar: '))
+            civil = ciudad.lCivil.buscarPorPosicion(entradaCivil)
+
+            if civil != None:
+                break
+
+    else:
+        civil = ciudad.lCivil.primero.dato
+
+
+    #Seleccionando la Entrada
+    if ciudad.lEntrada.tam > 1:
+        while True:
+            ciudad.lEntrada.recorrerLista(0)
+            entradaE = int(input('Selecciona una entrada para la mision: '))
+            entrada = ciudad.lEntrada.buscarPorPosicion(entradaE)
+
+            if entrada != None:
+                break
+    else:
+        entrada = ciudad.lEntrada.primero.dato
+
+
+
+    # tenemos la entrada, la ciudad, el robot y la unidad civil
+
+    print(f'La mision de rescate se ejecutara en la ciudad: {ciudad.nombre}')
+    print(f'La Ejecutara el Robot: {robot.nombre}')
+    print(f'Entrada a la ciudad en la coordenada: {entrada.x},{entrada.y} y Rescatara a una unidad Civil en: {civil.x},{civil.y}')
+    print('########################################')
 
     
 
 def misionExtraccion():
     print('Mision Extraccion')
+    ciudad = Ciudad()
+    robot = Robot('', '', '')
+    lRecursos = ciudad.obtenerLRecurso(ciudades)
+    lRobots = robot.obtenerlRobotsDisponibles(1, robots)
+    recurso = None
+    entrada = None
 
+    if lRecursos == None or lRobots == None:
+        print('Error: No se encuentran unidades Civiles en la ciudad seleccionada')
+        return
+
+    print('**Segun inteligencia, este es el listado de ciudades que contienen Recursos Valiosos para nuestra operacion**')
+
+    while True:
+        lRecursos.recorrerLista(0)
+        entradaCiudad = int(input('Seleccione una Ciudad para desplegar la mision: '))
+        ciudad = lRecursos.buscarPorPosicion(entradaCiudad)
+
+        if ciudad != None:
+            break
+
+
+    ## all
+    # Seleccionando el Robot
+    if lRobots.tam > 1:  # nos indica que hay mas de un robot, se debe de poder elegir el robot deseado
+        while True:
+            lRobots.recorrerLista(-1)
+            entradaRobot = int(input('Seleccione un Robot para la misión: '))
+            robot = lRobots.buscarPorPosicion(entradaRobot)
+
+            if robot != None:
+                break
+
+    else:
+        robot = lRobots.primero.dato
+
+        # Seleccionando el Recurso
+
+    if ciudad.lRecurso.tam > 1:
+        while True:
+            ciudad.lRecurso.recorrerLista(2)
+            entradaCivil = int(input('Seleccione el recurso a recuperar: '))
+            recurso = ciudad.lRecurso.buscarPorPosicion(entradaCivil)
+
+            if recurso != None:
+                break
+
+    else:
+        recurso = ciudad.lRecurso.primero.dato
+
+
+    #as
+        # Seleccionando la Entrada
+    if ciudad.lEntrada.tam > 1:
+        while True:
+            ciudad.lEntrada.recorrerLista(0)
+            entradaE = int(input('Selecciona una entrada para la mision: '))
+            entrada = ciudad.lEntrada.buscarPorPosicion(entradaE)
+
+            if entrada != None:
+                break
+    else:
+        entrada = ciudad.lEntrada.primero.dato
+
+    print(f'La mision de rescate se ejecutara en la ciudad: {ciudad.nombre}')
+    print(f'La Ejecutara el Robot: {robot.nombre}')
+    print(f'Entrada a la ciudad en la coordenada: {entrada.x},{entrada.y} y recuperara el Recurso en: {recurso.x},{recurso.y}')
+    print('########################################')
 
 
 
@@ -80,4 +209,6 @@ if __name__ == "__main__":
 
     print('Gracias por usar la app, cerdo.')
     exit()
+
+
 
