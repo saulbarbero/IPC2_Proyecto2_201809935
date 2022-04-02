@@ -66,7 +66,7 @@ class Recurso:
             mapa.insertar(6, columna, fila)
             return
 
-        iterador = 1
+        iterador = 0
         text = text.replace('"', '')
         for c in text:
             # print(f'Fila:{fila} Columna: {iterador} Content: {c}')
@@ -77,14 +77,14 @@ class Recurso:
             elif c == "E":
                 mapa.insertar(3, iterador + 1, fila)
 
-                lEntradas.insertar(unidadMapa(iterador, fila, 0))
+                lEntradas.insertar(unidadMapa(iterador + 1, fila, 0))
             elif c == "R":
                 #agregar el elemento a una nueva lista
-                lrecurso.insertar(unidadMapa(iterador, fila, 2))
+                lrecurso.insertar(unidadMapa(iterador + 1, fila, 2))
                 mapa.insertar(4, iterador + 1, fila)
             elif c == "C":
                 #agrear el elemento a una nueva lista.
-                lcivil.insertar(unidadMapa(iterador, fila, 1))
+                lcivil.insertar(unidadMapa(iterador + 1, fila, 1))
                 mapa.insertar(5, iterador + 1, fila)
             iterador += 1
 
@@ -102,7 +102,6 @@ class Recurso:
 
 
         return robot
-
 
 
 
