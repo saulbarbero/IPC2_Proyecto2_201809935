@@ -1,6 +1,5 @@
 from os import system
 
-
 class Nodo:
   def __init__(self, dato = None):
     self.dato = dato
@@ -62,6 +61,49 @@ class Cola:
             nuevo.anterior = self.ultimo
             self.ultimo = nuevo
 
+    def dequeue(self):
+        
+        if self.tam == 1:
+            self.primero = self.ultimo = None
+            return
+
+        aux = self.primero.siguiente
+        aux.anterior = None
+        self.primero.siguiente = None
+        self.primero = aux
+
+        self.tam -= 1
+
+
+        print(f'Eliminado Orden#: {aux.dato.id}')
+
+        return aux
+
+    def removerElemento(self, element):
+
+        pivote = self.primero
+
+
+        while(pivote != None):
+
+            if pivote == element:
+                if pivote == self.primero:
+                    self.primero = pivote.siguiente
+
+                elif pivote == self.ultimo:
+                    self.ultimo = pivote.anterior
+                else:
+                    pivote.anterior.siguiente = pivote.siguiente
+                    pivote.siguiente.anterior = pivote.anterior
+
+                return
+
+
+            pivote = pivote.siguiente
+
+
+        print('element no existe')
+
 
     def recorrerLista(self, tipo):
         if(self.primero == None):
@@ -75,6 +117,19 @@ class Cola:
             pivote = pivote.siguiente
 
             contador += 1
+
+        print('########################################')
+
+
+    def printLista(self):
+        if(self.primero == None):
+            return
+
+        pivote = self.primero
+        while(pivote != None):
+            print(f'x: {pivote.dato.x}, y: {pivote.dato.y}')
+            pivote = pivote.siguiente
+
 
         print('########################################')
 
@@ -124,3 +179,4 @@ class Cola:
 
 
         return buffer
+

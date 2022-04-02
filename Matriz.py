@@ -1,9 +1,11 @@
 
 from ListaCabecera import ListaCabecera
 from NodoOrtogonal import NodoOrtogonal
-from NodoCabecera import NodoCabecera 
-from os import system
+from NodoCabecera import NodoCabecera
+from Cola import Cola
 
+from os import system
+import sys
 
 class Matriz:
     def __init__(self, pa = ""):
@@ -11,6 +13,118 @@ class Matriz:
         self.columnas = ListaCabecera()
         self.patronA = pa
 
+
+    #algoritmo.
+    def isInsideMatrix(self, x, y):
+        if x >= 0 and x <= self.columnas.tam and y >= 0 and y <= self.filas.tam:
+            return True
+        return False
+
+
+
+    def isPath(self, xi, yi, xf, yf):
+
+        lPath = Cola()
+        flag = self._isPath(xi, yi, xf, yf, lPath)
+
+        print(flag)
+
+        lPath.printLista()
+
+
+        pivote = lPath.primero
+        while(pivote!= None):
+
+            pivote.dato.isPath = True
+
+            pivote = pivote.siguiente
+
+
+
+        # self.recorrerPorFilas()
+
+
+        if flag:
+            print('Se ha encontrado la ruta hacia la unidad civil')
+        else:
+            print('No ha sido posible rescatar la unidad civil')
+
+
+
+
+
+    def _isPath(self, x, y, xd, yd, l):
+        nodo = self.buscarPorPosicion(x, y)
+
+        if nodo == None:
+            return False
+
+
+        if (int(nodo.dato) == 2 or int(nodo.dato) == 3 or int(nodo.dato) == 5) and nodo.visited == False:
+            nodo.visited = True
+            l.insertar(nodo)
+
+            if int(nodo.x) == int(xd) and int(nodo.y) == int(yd):
+                print('Se encontro la ruta.')
+                return True
+
+
+            yr = yd - y
+            xr = xd - x
+
+
+
+            if yr < 1:
+                up = self._isPath(x, y - 1, xd, yd, l)
+
+                if up:
+                    return True
+
+                down = self._isPath(x, y + 1, xd, yd, l)
+
+                if down:
+                    return True
+
+            else:
+                down = self._isPath(x, y + 1, xd, yd, l)
+
+                if down:
+                    return True
+
+                up = self._isPath(x, y - 1, xd, yd, l)
+
+                if up:
+                    return True
+
+
+            if xr < 1:
+                left = self._isPath(x - 1, y, xd, yd, l)
+
+                if left:
+                    return True
+
+                rigth = self._isPath(x + 1, y, xd, yd, l)
+
+                if rigth:
+                    return True
+
+            else:
+                rigth = self._isPath(x + 1, y, xd, yd, l)
+
+                if rigth:
+                    return True
+
+                left = self._isPath(x - 1, y, xd, yd, l)
+
+                if left:
+                    return True
+
+
+
+
+        #aqui buscar ese nodo dentro de la lista y removerlo.
+        l.removerElemento(nodo)
+        return False
 
     def insertar(self, valor, x, y): # 4x3 -> wwbbbwwwwb -> x, y
         nuevo = NodoOrtogonal(x, y, valor)
@@ -78,7 +192,7 @@ class Matriz:
             actual = efila.acceso
             print('Fila#: ' +  str(efila.posicion))
             while(actual != None):
-                salida = str(actual.dato) + " x:"  + str(actual.x) + " y:" + str(actual.y)
+                salida = str(actual.dato) + " x:"  + str(actual.x) + " y:" + str(actual.y) + " path:" + str(actual.isPath)
                 print(salida)
 
                 actual = actual.dcho
@@ -201,7 +315,11 @@ class Matriz:
 
 
 
-    
+    def flip(self, valor):
+        if valor == "W":
+            return "B"
+        
+        return "W"
 
     def buscarNodo(self, x, y, m):
         efila = m.filas.obtenerNodoCabecera(y)
@@ -218,8 +336,28 @@ class Matriz:
 
         return None
 
+    def buscarPorPosicion(self, x, y):
+        efila = self.filas.obtenerNodoCabecera(y)
+
+        if efila == None:
+            return None
+
+        pivote = efila.acceso
+        while(pivote != None):
+            if int(pivote.x) == int(x):
+                return pivote
+
+
+            pivote = pivote.dcho
+
+        return None
+
 
     def __obtenerColor(self, actual):
+
+        if actual.isPath:
+            return "darkolivegreen"
+
         if actual.dato == 1:
             return 'black'
         elif actual.dato == 2:

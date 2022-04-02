@@ -129,6 +129,13 @@ def misionRescate():
     print(f'Entrada a la ciudad en la coordenada: {entrada.x},{entrada.y} y Rescatara a una unidad Civil en: {civil.x},{civil.y}')
     print('########################################')
 
+
+    ciudad.mapa.graficarMatriz(ciudad.nombre)
+    ciudad.mapa.isPath(entrada.x, entrada.y, civil.x, civil.y)
+    ciudad.mapa.graficarMatriz('salida')
+
+
+
     
 
 def misionExtraccion():
@@ -207,8 +214,5 @@ def misionExtraccion():
 if __name__ == "__main__":
     menuP()
 
-    print('Gracias por usar la app, cerdo.')
+    print('Gracias por usar la app')
     exit()
-
-
-
