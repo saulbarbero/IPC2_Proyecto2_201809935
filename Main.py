@@ -3,6 +3,7 @@ from Cola import Cola
 from  Recurso  import Recurso
 from Ciudad import Ciudad
 from Robot import Robot
+from pdf import generarPDF 
 robots = Cola()
 ciudades = Cola()
 
@@ -133,6 +134,8 @@ def misionRescate():
     ciudad.mapa.graficarMatriz(ciudad.nombre)
     ciudad.mapa.isPath(entrada.x, entrada.y, civil.x, civil.y)
     ciudad.mapa.graficarMatriz('salida')
+    generarPDF("Mision de Rescate","salida","Mision de Rescate",robot.nombre)
+
 
 
 
@@ -212,6 +215,7 @@ def misionExtraccion():
 
 
 if __name__ == "__main__":
+    generarPDF("nombre","salida","mision","robot")
     menuP()
 
     print('Gracias por usar la app')
