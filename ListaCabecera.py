@@ -1,5 +1,3 @@
-
-
 class ListaCabecera:
     def __init__(self):
         self.tam = 0
@@ -13,7 +11,7 @@ class ListaCabecera:
             #test
             self.primero.siguiente = self.ultimo
             self.ultimo.anterior = self.primero
-            print('')
+            
         else:
             if(nuevo.posicion < self.primero.posicion):
                 nuevo.siguiente = self.primero
@@ -40,7 +38,6 @@ class ListaCabecera:
                 nuevo.siguiente = pivote
                 pivote.anterior = nuevo
 
-        print('')
     
     def obtenerNodoCabecera(self, posicion):
         if(self.primero == None):

@@ -1,9 +1,7 @@
-
 from ListaCabecera import ListaCabecera
 from NodoOrtogonal import NodoOrtogonal
 from NodoCabecera import NodoCabecera
 from Cola import Cola
-#windows 
 from os import system
 
 class Matriz:

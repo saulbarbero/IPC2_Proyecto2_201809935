@@ -191,6 +191,3 @@ class Cola:
 
 
         return buffer
-
-
-#definir aqui el objeto.
