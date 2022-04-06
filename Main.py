@@ -3,8 +3,11 @@ from Cola import Cola
 from  Recurso  import Recurso
 from Ciudad import Ciudad
 from Robot import Robot
+from BusquedaRuta import BusquedaRuta
+from pdf import generarPDF
 robots = Cola()
 ciudades = Cola()
+
 
 menuPrincipal = {
     1: 'Cargar Archivo',
@@ -123,7 +126,7 @@ def misionRescate():
 
 
     # tenemos la entrada, la ciudad, el robot y la unidad civil
-
+    a='La mision de rescate se ejecutara en la ciudad: {ciudad.nombre}_ruta'
     print(f'La mision de rescate se ejecutara en la ciudad: {ciudad.nombre}')
     print(f'La Ejecutara el Robot: {robot.nombre}')
     print(f'Entrada a la ciudad en la coordenada: {entrada.x},{entrada.y} y Rescatara a una unidad Civil en: {civil.x},{civil.y}')
@@ -131,10 +134,20 @@ def misionRescate():
 
 
     ciudad.mapa.graficarMatriz(ciudad.nombre)
-    ciudad.mapa.isPath(entrada.x, entrada.y, civil.x, civil.y)
-    ciudad.mapa.graficarMatriz('salida')
+
+    busqueda = BusquedaRuta(ciudad.mapa, civil.x, civil.y)
+    salida = busqueda.isPath(entrada.x, entrada.y)
 
 
+    if salida:
+        #delete
+        ciudad.lCivil.removerElemento(civil)
+
+    ciudad.mapa.graficarMatriz(f'{ciudad.nombre}_Ruta')
+    ciudad.mapa = ciudad.mapa.deleteReferences()
+    a=ciudad.nombre+'_ruta'
+    b=ciudad.nombre+'_Ruta'
+    generarPDF(a,b,"Mision de Rescate",robot.nombre)
 
     
 
@@ -205,14 +218,27 @@ def misionExtraccion():
         entrada = ciudad.lEntrada.primero.dato
 
     print(f'La mision de rescate se ejecutara en la ciudad: {ciudad.nombre}')
-    print(f'La Ejecutara el Robot: {robot.nombre}')
+    print(f'La Ejecutara el Robot: {robot.nombre} Capacidad de Pelea: {robot.capacidad}')
     print(f'Entrada a la ciudad en la coordenada: {entrada.x},{entrada.y} y recuperara el Recurso en: {recurso.x},{recurso.y}')
     print('########################################')
+
+    ciudad.mapa.graficarMatriz(ciudad.nombre)
+
+    busqueda = BusquedaRuta(ciudad.mapa, recurso.x, recurso.y, robot)
+    busqueda.rescate(entrada.x, entrada.y)
+
+    ciudad.mapa.graficarMatriz(f'{ciudad.nombre}_Ruta')
+    ciudad.mapa = ciudad.mapa.deleteReferences()
+
+    a=ciudad.nombre+'_ruta'
+    b=ciudad.nombre+'_Ruta'
+    generarPDF(a,b,"Mision de Rescate",robot.nombre)
 
 
 
 if __name__ == "__main__":
     menuP()
 
-    print('Gracias por usar la app')
+    print('Gracias por usar la app.')
     exit()
+

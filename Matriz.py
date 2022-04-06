@@ -1,11 +1,8 @@
-
 from ListaCabecera import ListaCabecera
 from NodoOrtogonal import NodoOrtogonal
 from NodoCabecera import NodoCabecera
 from Cola import Cola
-
 from os import system
-import sys
 
 class Matriz:
     def __init__(self, pa = ""):
@@ -14,120 +11,29 @@ class Matriz:
         self.patronA = pa
 
 
-    #algoritmo.
-    def isInsideMatrix(self, x, y):
-        if x >= 0 and x <= self.columnas.tam and y >= 0 and y <= self.filas.tam:
-            return True
-        return False
+
+    def deleteReferences(self):
+        efila = self.filas.primero
+        for i in range(self.filas.tam):
+            actual = efila.acceso
+            while (actual != None):
+
+                if actual.isPath == True:
+                    # print(f'Borrando isPath: {actual.x},{actual.y}')
+                    actual.isPath = False
+
+                if actual.visited == True:
+                    # print(f'Borrando visited: {actual.x},{actual.y}')
+                    actual.visited = False
+
+                actual = actual.dcho
+            efila = efila.siguiente
 
 
+        return self
 
-    def isPath(self, xi, yi, xf, yf):
-
-        lPath = Cola()
-        flag = self._isPath(xi, yi, xf, yf, lPath)
-
-        print(flag)
-
-        lPath.printLista()
-
-
-        pivote = lPath.primero
-        while(pivote!= None):
-
-            pivote.dato.isPath = True
-
-            pivote = pivote.siguiente
-
-
-
-        # self.recorrerPorFilas()
-
-
-        if flag:
-            print('Se ha encontrado la ruta hacia la unidad civil')
-        else:
-            print('No ha sido posible rescatar la unidad civil')
-
-
-
-
-
-    def _isPath(self, x, y, xd, yd, l):
-        nodo = self.buscarPorPosicion(x, y)
-
-        if nodo == None:
-            return False
-
-
-        if (int(nodo.dato) == 2 or int(nodo.dato) == 3 or int(nodo.dato) == 5) and nodo.visited == False:
-            nodo.visited = True
-            l.insertar(nodo)
-
-            if int(nodo.x) == int(xd) and int(nodo.y) == int(yd):
-                print('Se encontro la ruta.')
-                return True
-
-
-            yr = yd - y
-            xr = xd - x
-
-
-
-            if yr < 1:
-                up = self._isPath(x, y - 1, xd, yd, l)
-
-                if up:
-                    return True
-
-                down = self._isPath(x, y + 1, xd, yd, l)
-
-                if down:
-                    return True
-
-            else:
-                down = self._isPath(x, y + 1, xd, yd, l)
-
-                if down:
-                    return True
-
-                up = self._isPath(x, y - 1, xd, yd, l)
-
-                if up:
-                    return True
-
-
-            if xr < 1:
-                left = self._isPath(x - 1, y, xd, yd, l)
-
-                if left:
-                    return True
-
-                rigth = self._isPath(x + 1, y, xd, yd, l)
-
-                if rigth:
-                    return True
-
-            else:
-                rigth = self._isPath(x + 1, y, xd, yd, l)
-
-                if rigth:
-                    return True
-
-                left = self._isPath(x - 1, y, xd, yd, l)
-
-                if left:
-                    return True
-
-
-
-
-        #aqui buscar ese nodo dentro de la lista y removerlo.
-        l.removerElemento(nodo)
-        return False
-
-    def insertar(self, valor, x, y): # 4x3 -> wwbbbwwwwb -> x, y
-        nuevo = NodoOrtogonal(x, y, valor)
+    def insertar(self, valor, x, y, militar): # 4x3 -> wwbbbwwwwb -> x, y
+        nuevo = NodoOrtogonal(x, y, valor, militar)
 
         fila = self.filas.obtenerNodoCabecera(y)
         self.insertarFilas(nuevo, fila)
@@ -150,7 +56,9 @@ class Matriz:
                 pivote = fila.acceso
                 while(nuevo.x >= pivote.x):
                     if nuevo.x == pivote.x:
+                        # pivote = nuevo
                         pivote.dato = nuevo.dato
+                        pivote.militar = nuevo.militar
                         return
                     if pivote.dcho == None:
                         pivote.dcho = nuevo
@@ -173,6 +81,8 @@ class Matriz:
                 if nuevo.y == pivote.y:
                     #sobre-escribir el valor de ese punto.
                     pivote.dato = nuevo.dato
+                    pivote.militar = nuevo.militar
+                    # pivote = nuevo
                     return
                 if pivote.abjo == None:
                     pivote.abjo = nuevo
@@ -207,7 +117,7 @@ class Matriz:
 
         arg = 'dot -Tpng ' +  nombre + '.dot -o ' + nombre + '.png'
         system(arg)
-        system('cd ./' + nombre + '.png')
+        # system('cd ./' + nombre + '.png')
         # startfile(nombre + '.png')
 
     def __graphPix(self):
@@ -355,7 +265,7 @@ class Matriz:
 
     def __obtenerColor(self, actual):
 
-        if actual.isPath:
+        if actual.isPath == True:
             return "darkolivegreen"
 
         if actual.dato == 1:

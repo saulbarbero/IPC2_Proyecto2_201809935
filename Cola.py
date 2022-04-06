@@ -1,4 +1,6 @@
+
 from os import system
+
 
 class Nodo:
   def __init__(self, dato = None):
@@ -12,6 +14,97 @@ class Cola:
       self.primero = None
       self.ultimo = None
       self.tam = 0
+
+    def insertar(self, dato):
+        self.tam += 1
+        nuevo = Nodo(dato = dato)
+        if self.primero is None:
+            self.primero = self.ultimo = nuevo
+        else:
+            self.ultimo.siguiente = nuevo
+            nuevo.anterior = self.ultimo
+            self.ultimo = nuevo
+
+    def dequeue(self):
+        
+        if self.tam == 1:
+            self.primero = self.ultimo = None
+            return
+
+        aux = self.primero.siguiente
+        aux.anterior = None
+        self.primero.siguiente = None
+        self.primero = aux
+
+        self.tam -= 1
+
+
+        print(f'Eliminado Orden#: {aux.dato.id}')
+
+        return aux
+
+    def pop(self):
+        aux = self.ultimo
+        self.removerElemento(self.ultimo)
+        return aux.dato
+
+    def removerElemento(self, element):
+
+        pivote = self.primero
+
+
+        while(pivote != None):
+
+            if pivote == element:
+                if pivote == self.primero:
+                    self.primero = pivote.siguiente
+
+                elif pivote == self.ultimo:
+                    self.ultimo = pivote.anterior
+                else:
+                    pivote.anterior.siguiente = pivote.siguiente
+                    pivote.siguiente.anterior = pivote.anterior
+
+
+
+                self.tam -= 1
+
+                return
+
+
+            pivote = pivote.siguiente
+
+
+        # print('element no existe')
+
+
+    def recorrerLista(self, tipo):
+        if(self.primero == None):
+            return
+
+        pivote = self.primero
+        contador = 1
+        while(pivote != None):
+            print(f'\t{contador}.- ', end=' ')
+            pivote.dato.imprimir(tipo) #ciudad, robot, unidadMapa
+            pivote = pivote.siguiente
+
+            contador += 1
+
+        print('########################################')
+
+
+    def printLista(self):
+        if(self.primero == None):
+            return
+
+        pivote = self.primero
+        while(pivote != None):
+            print(f'x: {pivote.dato.x}, y: {pivote.dato.y}')
+            pivote = pivote.siguiente
+
+
+        print('########################################')
 
 
     def insertarCiudad(self, dato):
@@ -51,87 +144,6 @@ class Cola:
 
         return None
 
-    def insertar(self, dato):
-        self.tam += 1
-        nuevo = Nodo(dato = dato)
-        if self.primero is None:
-            self.primero = self.ultimo = nuevo
-        else:
-            self.ultimo.siguiente = nuevo
-            nuevo.anterior = self.ultimo
-            self.ultimo = nuevo
-
-    def dequeue(self):
-        
-        if self.tam == 1:
-            self.primero = self.ultimo = None
-            return
-
-        aux = self.primero.siguiente
-        aux.anterior = None
-        self.primero.siguiente = None
-        self.primero = aux
-
-        self.tam -= 1
-
-
-        print(f'Eliminado Orden#: {aux.dato.id}')
-
-        return aux
-
-    def removerElemento(self, element):
-
-        pivote = self.primero
-
-
-        while(pivote != None):
-
-            if pivote == element:
-                if pivote == self.primero:
-                    self.primero = pivote.siguiente
-
-                elif pivote == self.ultimo:
-                    self.ultimo = pivote.anterior
-                else:
-                    pivote.anterior.siguiente = pivote.siguiente
-                    pivote.siguiente.anterior = pivote.anterior
-
-                return
-
-
-            pivote = pivote.siguiente
-
-
-        print('element no existe')
-
-
-    def recorrerLista(self, tipo):
-        if(self.primero == None):
-            return
-
-        pivote = self.primero
-        contador = 1
-        while(pivote != None):
-            print(f'\t{contador}.- ', end=' ')
-            pivote.dato.imprimir(tipo) #ciudad, robot, unidadMapa
-            pivote = pivote.siguiente
-
-            contador += 1
-
-        print('########################################')
-
-
-    def printLista(self):
-        if(self.primero == None):
-            return
-
-        pivote = self.primero
-        while(pivote != None):
-            print(f'x: {pivote.dato.x}, y: {pivote.dato.y}')
-            pivote = pivote.siguiente
-
-
-        print('########################################')
 
 
     def generarReporte(self, nombre):
@@ -179,4 +191,3 @@ class Cola:
 
 
         return buffer
-
