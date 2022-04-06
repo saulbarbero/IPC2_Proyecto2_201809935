@@ -3,7 +3,7 @@ from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 def generarPDF(nombre,imagen,mision,robot):
     w, h = A4
-    a="Texto texto texto texto texto "
+    
 
     c = canvas.Canvas(nombre+".pdf", pagesize=A4)
         
@@ -21,7 +21,7 @@ def generarPDF(nombre,imagen,mision,robot):
     c.drawString((w/2)-100, (h/2)-130,"Recurso")
     c.drawString((w/2)-100, (h/2)-150,"Ruta")
 
-    c.drawString((w/2)-100, (h/2)-180,a+mision+" "+robot)
+    c.drawString((w/2)-100, (h/2)-180,mision+" realizada por "+robot)
 
     
     c.setFillColorRGB(0, 0, 0)
@@ -34,9 +34,9 @@ def generarPDF(nombre,imagen,mision,robot):
     c.rect((w/2)-120, (h/2)-90, 10, 10, fill=True)
     c.setFillColorRGB(0, 0, 255)
     c.rect((w/2)-120, (h/2)-110, 10, 10, fill=True)
-    c.setFillColorRGB(149,165,166)
+    c.setFillColorRGB(128,128,128)
     c.rect((w/2)-120, (h/2)-130, 10, 10, fill=True)
-    c.setFillColorRGB(20,90,50)
+    c.setFillColorRGB(0,100,0)
     c.rect((w/2)-120, (h/2)-150, 10, 10, fill=True)
 
 

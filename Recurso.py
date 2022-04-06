@@ -50,7 +50,7 @@ class Recurso:
                 self.crearMatriz(int(ciudad.attrib["numero"]), 0,  ciudad.text, mapa ,lEntradas, city.lCivil, city.lRecurso)
 
             else: #debe de ser una unidad militar
-                self.crearMatriz(int(ciudad.attrib["fila"]), int(ciudad.attrib["columna"]), None, mapa, None, None, None)
+                self.crearMatriz(int(ciudad.attrib["fila"]), int(ciudad.attrib["columna"]), None, mapa, ciudad.text, None, None)
 
 
         # mapa.recorrerPorFilas()
@@ -63,7 +63,8 @@ class Recurso:
     def crearMatriz(self, fila, columna,  text, mapa, lEntradas, lcivil, lrecurso):
 
         if(text == None):
-            mapa.insertar(6, columna, fila)
+            #para este caso especifico, lEntradas, contiene la capacidad de lucha de la unidad militar.
+            mapa.insertar(6, columna, fila, int(lEntradas)) # se inserta una unidad militar.
             return
 
         iterador = 0
@@ -71,21 +72,21 @@ class Recurso:
         for c in text:
             # print(f'Fila:{fila} Columna: {iterador} Content: {c}')
             if c == "*":
-                mapa.insertar(1, iterador + 1, fila)
+                mapa.insertar(1, iterador + 1, fila, None)
             elif c == " ":
-                mapa.insertar(2, iterador + 1, fila)
+                mapa.insertar(2, iterador + 1, fila, None)
             elif c == "E":
-                mapa.insertar(3, iterador + 1, fila)
+                mapa.insertar(3, iterador + 1, fila, None)
 
                 lEntradas.insertar(unidadMapa(iterador + 1, fila, 0))
             elif c == "R":
                 #agregar el elemento a una nueva lista
                 lrecurso.insertar(unidadMapa(iterador + 1, fila, 2))
-                mapa.insertar(4, iterador + 1, fila)
+                mapa.insertar(4, iterador + 1, fila, None)
             elif c == "C":
                 #agrear el elemento a una nueva lista.
                 lcivil.insertar(unidadMapa(iterador + 1, fila, 1))
-                mapa.insertar(5, iterador + 1, fila)
+                mapa.insertar(5, iterador + 1, fila, None)
             iterador += 1
 
 
@@ -102,7 +103,6 @@ class Recurso:
 
 
         return robot
-
 
 
 
